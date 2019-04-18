@@ -1,11 +1,11 @@
-var tags = ["redneck", "middle finger", "maury"];
+let tags = ["annoyed", "arguing", "blocked", "bored", "bitter", "bye", "celebrate", "cleaning", "confrontation", "cops", "dancing", "driving", "eating", "exercising", "fabulous", "fight", "fire", "flying", "funny pets", "gaming", "girl bye", "glad", "hacking", "hello", "hug", "jealous", "jumping", "laughing", "listening to music", "love", "mad", "maybe", "no", "outraged", "outstanding", "pointing", "shopping", "reading", "running", "sad", "saying goodbye", "scared", "slap", "sleeping", "tired", "traveling", "trouble", "walking dog", "watching movie", "waving", "working", "yes"];
 function initialize() {
-    var root = document.getElementById("root");
+    let root = document.getElementById("root");
     root.innerHTML = '';
-    var buttonRoot = document.createElement("div");
+    let buttonRoot = document.createElement("div");
     root.appendChild(buttonRoot);
-    for(var tag of tags) {
-        var button = document.createElement("button");
+    for(let tag of tags) {
+        let button = document.createElement("button");
         button.innerText = tag;
         buttonRoot.appendChild(button);
         const innerTag = tag;
@@ -13,15 +13,36 @@ function initialize() {
             queryGiphy(innerTag, loadImages);
         });
     }
+    let inputDiv = document.createElement("div");
+    let inputField = document.createElement("input");
+    inputField.type = "text";
+    let buttonElement = document.createElement("button");
+    buttonElement.innerHTML = "add";
+    buttonElement.addEventListener("click", function() {
+        if(inputField.value.length === 0) {
+            return;
+        }
+        let button = document.createElement("button");
+        button.innerText = inputField.value.toLocaleLowerCase();
+        buttonRoot.appendChild(button);
+        const innerTag = inputField.value.toLocaleLowerCase();
+        button.addEventListener("click", function(){
+            queryGiphy(innerTag, loadImages);
+        }); 
+        inputField.value = "";
+    });
+    inputDiv.appendChild(inputField);
+    inputDiv.appendChild(buttonElement);
+    root.appendChild(inputDiv);
 }
 initialize();
 function queryGiphy(keyword,fulfillGiphy){
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    keyword + "&api_key=dc6zaTOxFJmzC&limit=10";
-    var htmlRequest = new XMLHttpRequest();
+    let queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+    keyword + "&api_key=dc6zaTOxFJmzC&limit=10&rating=PG-13";
+    let htmlRequest = new XMLHttpRequest();
     htmlRequest.onload = function() { 
         if(htmlRequest.response) {
-            var object = JSON.parse(htmlRequest.response);
+            let object = JSON.parse(htmlRequest.response);
             fulfillGiphy(object.data);
         } else {
             console.log("error");
@@ -34,18 +55,32 @@ queryGiphy("redneck", function(results){
    console.log(results); 
 });
 function loadImages(imageDatas) {
-    var root = document.getElementById("root");
-    var imageRoot = document.getElementById("image-root");
+    let root = document.getElementById("root");
+    let imageRoot = document.getElementById("image-root");
     if(!imageRoot) {
         imageRoot = document.createElement("div");
         imageRoot.id = "image-root";
         root.appendChild(imageRoot);
     }
     imageRoot.innerHTML = '';
-    for(var imageData of imageDatas) {
-        var image = document.createElement("img");
-        imageRoot.appendChild(image);
-        image.src = imageData.images.fixed_height.url;
-
+    for(let imageData of imageDatas) {
+        let div = document.createElement("div");
+        let paragraph = document.createElement("p");
+        paragraph.innerHTML = `rating ${imageData.rating}`;
+        div.appendChild(paragraph);
+        let image = document.createElement("img");
+        div.appendChild(image);
+        imageRoot.appendChild(div);
+        // image.src = imageData.images.fixed_height.url;
+        image.src = imageData.images.fixed_height_still.url;
+        let toggle = false;
+        image.addEventListener("click", function() {
+            toggle = !toggle;
+            if(toggle) {
+                image.src = imageData.images.fixed_height.url;
+            } else {
+                image.src = imageData.images.fixed_height_still.url;
+            }
+        })
     }
 }
