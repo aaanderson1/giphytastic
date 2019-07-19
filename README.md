@@ -11,4 +11,4 @@ Link to the deployed version: https://aaanderson1.github.io/giftastic/
 
 Link to the code on GitHub: https://github.com/aaanderson1/giphytastic
 
-  ![Results](/giftasticscreenshot.png)
+  ![Results](/assets/giftasticscreenshot.png)
