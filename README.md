@@ -3,7 +3,7 @@
 - - -
 ## Directions:
 
-• GifTastic is a directory of emotions or actions to express yourself.
+• GifTastic is a directory of emotions or actions to express yourself, linked to the Giphy API.
 
 • Click a button to see 10 GIF's of said emotion or action. 
 
